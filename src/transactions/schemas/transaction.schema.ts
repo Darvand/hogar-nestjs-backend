@@ -52,6 +52,9 @@ export class Transaction {
 
   @Prop()
   description: string;
+
+  @Prop({ default: Date.now })
+  created_at: Date;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);

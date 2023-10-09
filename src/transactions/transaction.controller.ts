@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { HogarTransactionService } from './transaction.service';
 import { CreateTransactionDTO } from './dtos/create-transaction.dto';
 import { GetAllTransactionsDTO } from './dtos/get-all-transactions.dto';
@@ -23,5 +31,10 @@ export class HogarTransactionController {
       createTransactionDTO,
     );
     return this.service.create(createTransactionDTO);
+  }
+
+  @Delete(':transaction_id')
+  deleteById(@Param('transaction_id') transactionId: string): Promise<void> {
+    return this.service.deleteById(transactionId);
   }
 }

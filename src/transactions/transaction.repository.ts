@@ -10,10 +10,15 @@ export class HogarTransactionRepository {
   ) {}
 
   getAll(): Promise<Transaction[]> {
-    return this.model.find();
+    return this.model.find().sort({ created_at: -1 });
   }
 
   create(transaction: Partial<Transaction>): Promise<Transaction> {
     return this.model.create(transaction);
+  }
+
+  async deleteById(id: string): Promise<boolean> {
+    const result = await this.model.deleteOne({ _id: id });
+    return result.acknowledged;
   }
 }

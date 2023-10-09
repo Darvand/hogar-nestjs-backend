@@ -10,7 +10,7 @@ import {
 } from './schemas/transaction.schema';
 import { HogarTransactionRepository } from './transaction.repository';
 import { CurrencyUtil } from './utils/currency.util';
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 
 const categoryIcon: Record<CategoryEnum, string> = {
   [CategoryEnum.HouseFood]: 'local-grocery-store',
@@ -58,5 +58,14 @@ export class HogarTransactionService {
     });
     this.logger.debug('Transaction successfull created', transactionResponse);
     return this.toTransactionsDTO(transactionResponse);
+  }
+  async deleteById(transactionId: string): Promise<void> {
+    this.logger.debug(`Deleting transaction with id ${transactionId}`);
+    const deleted = await this.repository.deleteById(transactionId);
+    if (!deleted) {
+      throw new BadRequestException(
+        `Transaction with id ${transactionId} not deleted`,
+      );
+    }
   }
 }
